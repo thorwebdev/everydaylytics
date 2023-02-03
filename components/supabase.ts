@@ -4,6 +4,7 @@ import {
   parseCookies,
   serializeCookie,
 } from "@supabase/auth-helpers-shared";
+import { Database } from "../types/database.types.ts";
 
 export function createServerClient(
   { req, resHeaders, cookieOptions }: {
@@ -12,7 +13,7 @@ export function createServerClient(
     cookieOptions?: CookieOptions;
   },
 ) {
-  return createServerSupabaseClient({
+  return createServerSupabaseClient<Database>({
     cookieOptions,
     supabaseUrl: "http://localhost:54321",
     supabaseKey:
