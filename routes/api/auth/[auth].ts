@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { createServerClient } from "../../../components/supabase.ts";
+import { createServerClient } from "../../../utils/supabase.ts";
 
 export const handler: Handlers = {
   async POST(req, ctx) {

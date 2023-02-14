@@ -1,6 +1,6 @@
 import { Head } from "$fresh/runtime.ts";
 import type { Handlers, PageProps } from "$fresh/server.ts";
-import { createServerClient } from "../components/supabase.ts";
+import { createServerClient } from "../utils/supabase.ts";
 import { Session } from "@supabase/supabase-js";
 import SignOut from "../islands/SignOut.tsx";
 import { Link } from "../components/Link.tsx";

@@ -1,7 +1,22 @@
 import { Head } from "$fresh/runtime.ts";
+import type { Handlers } from "$fresh/server.ts";
 import SignUpOrIn from "../islands/SignUpOrIn.tsx";
 
-export default function SignUpPage() {
+export const handler: Handlers = {
+  GET(_req, ctx) {
+    if (ctx.state.session) {
+      const headers = new Headers();
+      headers.set("location", "/");
+      return new Response(null, {
+        status: 303,
+        headers,
+      });
+    }
+    return ctx.render!();
+  },
+};
+
+export default function SignInPage() {
   return (
     <>
       <Head>
