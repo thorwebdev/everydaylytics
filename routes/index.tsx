@@ -8,7 +8,6 @@ import { Database } from "../types/database.types.ts";
 
 export const handler: Handlers = {
   async GET(req, ctx) {
-    console.log("index handler", ctx.state);
     const headers = new Headers();
     const supabase = createServerClient({ req, resHeaders: headers });
     const { data: events } = await supabase.from("events").select("*");

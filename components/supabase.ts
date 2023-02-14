@@ -1,9 +1,8 @@
 import {
   CookieOptions,
   createServerSupabaseClient,
-  parseCookies,
-  serializeCookie,
 } from "@supabase/auth-helpers-shared";
+import { getCookies, setCookie } from "std/http/cookie.ts";
 import { Database } from "../types/database.types.ts";
 
 export function createServerClient(
@@ -22,16 +21,18 @@ export function createServerClient(
       return req.headers.get(key) ?? undefined;
     },
     getCookie: (name) => {
-      const result = parseCookies(req.headers.get("Cookie") ?? "")[name];
-      return result;
+      const cookies = getCookies(req.headers);
+      const cookie = cookies[name] ?? "";
+      return decodeURIComponent(cookie);
     },
     setCookie: (name, value, options) => {
-      const cookieStr = serializeCookie(name, value, {
+      setCookie(resHeaders, {
+        name,
+        value: encodeURIComponent(value),
         ...options,
-        // Allow supabase-js on the client to read the cookie as well
+        sameSite: "Lax",
         httpOnly: false,
       });
-      resHeaders.set("set-cookie", cookieStr);
     },
   });
 }
