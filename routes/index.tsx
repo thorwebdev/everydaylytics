@@ -8,11 +8,11 @@ import { Database } from "../types/database.types.ts";
 
 export const handler: Handlers = {
   async GET(req, ctx) {
+    console.log("index handler", ctx.state);
     const headers = new Headers();
     const supabase = createServerClient({ req, resHeaders: headers });
-    const { data: { session } } = await supabase.auth.getSession();
     const { data: events } = await supabase.from("events").select("*");
-    return ctx.render!({ session, events });
+    return ctx.render!({ events, session: ctx.state.session as Session });
   },
 };
 
@@ -34,7 +34,7 @@ export default function Home({ data }: PageProps<PageData>) {
         </>
       )}
       <div class="p-4 mx-auto max-w-screen-md">
-        <pre>{JSON.stringify(data.events, null, 2)}</pre>
+        <pre>{JSON.stringify({session: data.session, events: data.events}, null, 2)}</pre>
       </div>
     </>
   );

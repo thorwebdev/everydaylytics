@@ -68,6 +68,8 @@ export const handler: Handlers = {
       );
     }
 
+    console.log("auth route headers");
+    headers.forEach((v, k) => console.log(k, v));
     return new Response(null, {
       status: 303,
       headers,
