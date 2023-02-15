@@ -24,6 +24,9 @@ ships [PKCE](https://supabase.com/docs/guides/resources/glossary#pkce)
   [supabase-js server-client](./utils/supabase.ts) to get the Session from the
   cookie and attach it to the `ctx.state` to make it available throughout our
   application, e.g. in our [index route](./routes/index.tsx).
+  - This middleware also automatically refreshes our access token when it is
+    expired, allowing the user to be logged in indefinitely until they choose to
+    sign out.
 - For OAuth we use a dedicated
   [OAuth return route](./routes/supa-oauth-redirect-return.tsx) that uses an
   [AuthFragmentCatcher island component](./islands/AuthFragmentCatcher.tsx) with
