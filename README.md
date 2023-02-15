@@ -31,7 +31,7 @@ ships [PKCE](https://supabase.com/docs/guides/resources/glossary#pkce)
   [OAuth return route](./routes/supa-oauth-redirect-return.tsx) that uses an
   [AuthFragmentCatcher island component](./islands/AuthFragmentCatcher.tsx) with
   a supabase-js browser client, to detect the session information in the
-  fragement in the URL and set it as a cookie.
+  fragment in the URL and set it as a cookie.
 
 I beleive this is currently the most robust approach for server-side rendered
 applications. Feel free to open issues with questions or suggestions. Thanks.
