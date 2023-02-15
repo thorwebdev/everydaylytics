@@ -32,7 +32,7 @@ export default function Home({ data }: PageProps<PageData>) {
           ? (
             <>
               <SignOut />
-              <h3>Welcome {data.session?.user.email}</h3>
+              <h3>Welcome {data.session.user.email}</h3>
               <pre>{JSON.stringify({events: data.events}, null, 2)}</pre>
             </>
           )
