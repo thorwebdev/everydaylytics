@@ -26,14 +26,22 @@ export default function Home({ data }: PageProps<PageData>) {
       <Head>
         <title>EverydayLytics - Home</title>
       </Head>
-      {data.session ? <SignOut /> : (
-        <>
-          <Link href="/signup">Get started</Link>
-          <Link href="/signin">Sign In</Link>
-        </>
-      )}
+
       <div class="p-4 mx-auto max-w-screen-md">
-        <pre>{JSON.stringify({session: data.session, events: data.events}, null, 2)}</pre>
+        {data.session
+          ? (
+            <>
+              <SignOut />
+              <h3>Welcome {data.session?.user.email}</h3>
+              <pre>{JSON.stringify({events: data.events}, null, 2)}</pre>
+            </>
+          )
+          : (
+            <>
+              <Link href="/signup">Get started</Link>
+              <Link href="/signin">Sign In</Link>
+            </>
+          )}
       </div>
     </>
   );

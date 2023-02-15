@@ -1,5 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { createServerClient } from "../../../utils/supabase.ts";
+import { Provider } from "@supabase/supabase-js";
 
 export const handler: Handlers = {
   async POST(req, ctx) {
@@ -8,6 +9,7 @@ export const handler: Handlers = {
     const form = await req.formData();
     const email = form.get("email") as string;
     const password = form.get("password") as string;
+    const provider = form.get("provider") as Provider;
 
     const headers = new Headers();
     try {
@@ -39,6 +41,23 @@ export const handler: Handlers = {
             headers.set(
               "location",
               `/`,
+            );
+          }
+          break;
+
+        case "oauth":
+          {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+              provider,
+              options: {
+                scopes: "repo",
+                redirectTo: "http://localhost:8000/supa-oauth-redirect-return",
+              },
+            });
+            if (error) throw error;
+            headers.set(
+              "location",
+              data.url,
             );
           }
           break;

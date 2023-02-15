@@ -13,6 +13,13 @@ export default function SignUpOrIn({ mode }: { mode: "signup" | "signin" }) {
         </label>
         <Button>{mode === "signup" ? "Sign Up" : "Sign In"}</Button>
       </form>
+      <hr />
+      <form method="post" action={`/api/auth/oauth`}>
+        <input type="hidden" name="provider" value="github" />
+        <Button>
+          GitHub OAuth
+        </Button>
+      </form>
     </div>
   );
 }

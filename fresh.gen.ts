@@ -10,9 +10,11 @@ import * as $3 from "./routes/api/joke.ts";
 import * as $4 from "./routes/index.tsx";
 import * as $5 from "./routes/signin.tsx";
 import * as $6 from "./routes/signup.tsx";
-import * as $$0 from "./islands/Counter.tsx";
-import * as $$1 from "./islands/SignOut.tsx";
-import * as $$2 from "./islands/SignUpOrIn.tsx";
+import * as $7 from "./routes/supa-oauth-redirect-return.tsx";
+import * as $$0 from "./islands/AuthFragmentCatcher.tsx";
+import * as $$1 from "./islands/Counter.tsx";
+import * as $$2 from "./islands/SignOut.tsx";
+import * as $$3 from "./islands/SignUpOrIn.tsx";
 
 const manifest = {
   routes: {
@@ -23,11 +25,13 @@ const manifest = {
     "./routes/index.tsx": $4,
     "./routes/signin.tsx": $5,
     "./routes/signup.tsx": $6,
+    "./routes/supa-oauth-redirect-return.tsx": $7,
   },
   islands: {
-    "./islands/Counter.tsx": $$0,
-    "./islands/SignOut.tsx": $$1,
-    "./islands/SignUpOrIn.tsx": $$2,
+    "./islands/AuthFragmentCatcher.tsx": $$0,
+    "./islands/Counter.tsx": $$1,
+    "./islands/SignOut.tsx": $$2,
+    "./islands/SignUpOrIn.tsx": $$3,
   },
   baseUrl: import.meta.url,
   config,
