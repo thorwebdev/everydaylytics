@@ -1,6 +1,5 @@
-import { Head } from "$fresh/runtime.ts";
 import type { Handlers } from "$fresh/server.ts";
-import SignUpOrIn from "../islands/SignUpOrIn.tsx";
+import AuthFragmentCatcher from "../islands/AuthFragmentCatcher.tsx";
 
 export const handler: Handlers = {
   GET(_req, ctx) {
@@ -16,16 +15,13 @@ export const handler: Handlers = {
   },
 };
 
-export default function SignInPage() {
+export default function RedirectReturn() {
   return (
-    <>
-      <Head>
-        <title>EverydayLytics - Sign In</title>
-      </Head>
-      <SignUpOrIn mode="signin" />
-      <p>
-        Don't have an account yet? <a href="/signup">Sign Up</a>
-      </p>
-    </>
+    <div>
+      <AuthFragmentCatcher
+        supabaseUrl={Deno.env.get("SUPABASE_URL")!}
+        supabaseKey={Deno.env.get("SUPABASE_ANON_KEY")!}
+      />
+    </div>
   );
 }
