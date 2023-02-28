@@ -2,8 +2,46 @@ import {
   CookieOptions,
   createServerSupabaseClient,
 } from "@supabase/auth-helpers-shared";
-import { getCookies, setCookie } from "std/http/cookie.ts";
+import { deleteCookie, getCookies, setCookie } from "std/http/cookie.ts";
 import { Database } from "../types/database.types.ts";
+
+import { GoTrueClient } from "../supabase/gotrue-js/src/index.ts";
+
+export function createPKCEGotrueClient({ req, resHeaders, cookieOptions }: {
+  req: Request;
+  resHeaders: Headers;
+  cookieOptions?: CookieOptions;
+}) {
+  return new GoTrueClient({
+    url: "http://localhost:9999",
+    storage: {
+      getItem: (name) => {
+        console.log("getItem: ", name);
+        const cookies = getCookies(req.headers);
+        const cookie = cookies[name] ?? "";
+        const value = decodeURIComponent(cookie);
+        console.log(value);
+        return value;
+      },
+      setItem: (name, value) => {
+        console.log("setItem: ", name, value);
+        setCookie(resHeaders, {
+          name,
+          value: encodeURIComponent(value),
+          ...cookieOptions,
+          sameSite: "Lax",
+          httpOnly: true,
+        });
+      },
+      removeItem: (name) => {
+        console.log("removeItem: ", name);
+        deleteCookie(resHeaders, name, {
+          ...cookieOptions,
+        });
+      },
+    },
+  });
+}
 
 export function createServerClient(
   { req, resHeaders, cookieOptions }: {
