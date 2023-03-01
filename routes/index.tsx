@@ -5,19 +5,38 @@ import { Session } from "@supabase/supabase-js";
 import SignOut from "../islands/SignOut.tsx";
 import { Link } from "../components/Link.tsx";
 import { Database } from "../types/database.types.ts";
+import EventForm from "../islands/EventForm.tsx";
 
 export const handler: Handlers = {
   async GET(req, ctx) {
-    const headers = new Headers();
-    const supabase = createServerClient({ req, resHeaders: headers });
+    const supabase = createServerClient({ req });
     const { data: events } = await supabase.from("events").select("*");
     return ctx.render!({ events, session: ctx.state.session as Session });
+  },
+  // New event form submit
+  async POST(req, ctx) {
+    const form = await req.formData();
+    const name = form.get("name") as string;
+    const duration = Number(form.get("duration") as string);
+
+    const supabase = createServerClient({ req });
+    const { error } = await supabase.from("events").insert({
+      name,
+      duration,
+    });
+    const { data: events } = await supabase.from("events").select("*");
+    return ctx.render!({
+      events,
+      session: ctx.state.session as Session,
+      error,
+    });
   },
 };
 
 interface PageData {
   session: Session | null;
   events: Array<Database["public"]["Tables"]["events"]["Row"]> | null;
+  error: { message: string } | null;
 }
 
 export default function Home({ data }: PageProps<PageData>) {
@@ -33,7 +52,8 @@ export default function Home({ data }: PageProps<PageData>) {
             <>
               <SignOut />
               <h3>Welcome {data.session.user.email}</h3>
-              <pre>{JSON.stringify({events: data.events}, null, 2)}</pre>
+              <EventForm />
+              <pre>{JSON.stringify({events: data.events, error: data.error}, null, 2)}</pre>
             </>
           )
           : (

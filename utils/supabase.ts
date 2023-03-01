@@ -8,7 +8,7 @@ import { Database } from "../types/database.types.ts";
 export function createServerClient(
   { req, resHeaders, cookieOptions }: {
     req: Request;
-    resHeaders: Headers;
+    resHeaders?: Headers;
     cookieOptions?: CookieOptions;
   },
 ) {
@@ -32,6 +32,7 @@ export function createServerClient(
       return decodeURIComponent(cookie);
     },
     setCookie: (name, value, options) => {
+      if (!resHeaders) return;
       setCookie(resHeaders, {
         name,
         value: encodeURIComponent(value),

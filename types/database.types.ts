@@ -47,7 +47,7 @@ export interface Database {
           duration?: number
           id?: string
           name: string
-          user_id: string
+          user_id?: string
         }
         Update: {
           created_at?: string
@@ -63,18 +63,21 @@ export interface Database {
           duration: number
           event_id: string
           id: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           duration?: number
           event_id: string
           id?: string
+          user_id?: string
         }
         Update: {
           created_at?: string
           duration?: number
           event_id?: string
           id?: string
+          user_id?: string
         }
       }
     }
@@ -180,20 +183,29 @@ export interface Database {
     }
     Functions: {
       extension: {
-        Args: { name: string }
+        Args: {
+          name: string
+        }
         Returns: string
       }
       filename: {
-        Args: { name: string }
+        Args: {
+          name: string
+        }
         Returns: string
       }
       foldername: {
-        Args: { name: string }
+        Args: {
+          name: string
+        }
         Returns: string[]
       }
       get_size_by_bucket: {
         Args: Record<PropertyKey, never>
-        Returns: { size: number; bucket_id: string }[]
+        Returns: {
+          size: number
+          bucket_id: string
+        }[]
       }
       search: {
         Args: {

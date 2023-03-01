@@ -13,8 +13,9 @@ import * as $6 from "./routes/signup.tsx";
 import * as $7 from "./routes/supa-oauth-redirect-return.tsx";
 import * as $$0 from "./islands/AuthFragmentCatcher.tsx";
 import * as $$1 from "./islands/Counter.tsx";
-import * as $$2 from "./islands/SignOut.tsx";
-import * as $$3 from "./islands/SignUpOrIn.tsx";
+import * as $$2 from "./islands/EventForm.tsx";
+import * as $$3 from "./islands/SignOut.tsx";
+import * as $$4 from "./islands/SignUpOrIn.tsx";
 
 const manifest = {
   routes: {
@@ -30,8 +31,9 @@ const manifest = {
   islands: {
     "./islands/AuthFragmentCatcher.tsx": $$0,
     "./islands/Counter.tsx": $$1,
-    "./islands/SignOut.tsx": $$2,
-    "./islands/SignUpOrIn.tsx": $$3,
+    "./islands/EventForm.tsx": $$2,
+    "./islands/SignOut.tsx": $$3,
+    "./islands/SignUpOrIn.tsx": $$4,
   },
   baseUrl: import.meta.url,
   config,
