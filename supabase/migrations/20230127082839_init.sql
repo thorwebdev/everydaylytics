@@ -1,7 +1,7 @@
 create table public.events (
   id uuid default uuid_generate_v4() primary key,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
-  user_id uuid references auth.users not null,
+  user_id uuid references auth.users default auth.uid() not null,
   name text not null,
   duration integer default 0 not null,
   unique(user_id, name)
@@ -20,7 +20,7 @@ create table public.logs (
   id uuid default uuid_generate_v4() primary key,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   duration integer default 0 not null,
-  user_id uuid references auth.users not null,
+  user_id uuid references auth.users default auth.uid() not null,
   event_id uuid references public.events not null
 );
 alter table public.logs enable row level security;
