@@ -51,7 +51,9 @@ export const handler: Handlers = {
               provider,
               options: {
                 scopes: "repo",
-                redirectTo: "http://localhost:8000/supa-oauth-redirect-return",
+                redirectTo: `${new URL(req.url).protocol}//${
+                  new URL(req.url).host
+                }/supa-oauth-redirect-return`,
               },
             });
             if (error) throw error;
