@@ -21,6 +21,12 @@ export default function RedirectReturn() {
       <AuthFragmentCatcher
         supabaseUrl={Deno.env.get("SUPABASE_URL")!}
         supabaseKey={Deno.env.get("SUPABASE_ANON_KEY")!}
+        cookieOptions={{
+          name: `sb-${
+            new URL(Deno.env.get("SUPABASE_URL") ?? "http://localhost:54321")
+              .hostname.split(".")[0]
+          }-auth-token`,
+        }}
       />
     </div>
   );

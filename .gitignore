@@ -1,1 +1,2 @@
 .env
+supabase/gotrue-js-pkce/*

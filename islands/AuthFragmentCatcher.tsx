@@ -1,9 +1,13 @@
 import { useEffect } from "preact/hooks";
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-shared";
+import {
+  CookieOptions,
+  createBrowserSupabaseClient,
+} from "@supabase/auth-helpers-shared";
 
 interface SupaClientProps {
   supabaseUrl: string;
   supabaseKey: string;
+  cookieOptions: CookieOptions;
 }
 
 export default function AuthFragmentCatcher(props: SupaClientProps) {
