@@ -7,7 +7,7 @@ export default function EventForm() {
         name: <input required type="text" name="name" />
       </label>
       <label>
-        default duration:{" "}
+        default duration (mins):{" "}
         <input required type="number" name="duration" value={0} />
       </label>
       <Button>Save</Button>
