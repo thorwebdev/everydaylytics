@@ -6,6 +6,7 @@ import SignOut from "../islands/SignOut.tsx";
 import { Link } from "../components/Link.tsx";
 import { Database } from "../types/database.types.ts";
 import EventForm from "../islands/EventForm.tsx";
+import { EventList } from "../components/EventList.tsx";
 
 export const handler: Handlers = {
   async GET(req, ctx) {
@@ -53,7 +54,7 @@ export default function Home({ data }: PageProps<PageData>) {
               <SignOut />
               <h3>Welcome {data.session.user.email}</h3>
               <EventForm />
-              <pre>{JSON.stringify({events: data.events, error: data.error}, null, 2)}</pre>
+              <EventList events={data.events} />
             </>
           )
           : (

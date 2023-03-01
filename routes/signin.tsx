@@ -1,6 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import type { Handlers } from "$fresh/server.ts";
 import SignUpOrIn from "../islands/SignUpOrIn.tsx";
+import { Link } from "../components/Link.tsx";
 
 export const handler: Handlers = {
   GET(_req, ctx) {
@@ -24,7 +25,7 @@ export default function SignInPage() {
       </Head>
       <SignUpOrIn mode="signin" />
       <p>
-        Don't have an account yet? <a href="/signup">Sign Up</a>
+        Don't have an account yet? <Link href="/signup">Sign Up</Link>
       </p>
     </>
   );
