@@ -2,6 +2,23 @@ import { MiddlewareHandler } from "$fresh/server.ts";
 import { createServerClient } from "../utils/supabase.ts";
 
 export const handler: MiddlewareHandler[] = [
+  async function exchangeAuthCode(req, ctx) {
+    const url = new URL(req.url);
+    const code = url.searchParams.get("code");
+    console.log({ code });
+    if (!code) {
+      return ctx.next();
+    }
+    const headers = new Headers();
+    const supabase = createServerClient({ req, resHeaders: headers });
+    const { data: { session }, error } = await supabase.auth
+      .exchangeCodeForSession(code);
+    if (error) console.warn("error exchanging pkce code:", error.message);
+    ctx.state.session = session;
+    const res = await ctx.next();
+    headers.forEach((v, k) => res.headers.set(k, v));
+    return res;
+  },
   async function getSupabaseSession(req, ctx) {
     const { pathname } = new URL(req.url);
     if (

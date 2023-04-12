@@ -16,8 +16,7 @@ export const handler: Handlers = {
       const supabase = createServerClient({
         req,
         resHeaders: headers,
-        cookieOptions: { domain: url.hostname },
-      });
+      }, { cookieOptions: { domain: url.hostname } });
 
       switch (mode) {
         case "signup":
@@ -53,7 +52,7 @@ export const handler: Handlers = {
                 scopes: "repo",
                 redirectTo: `${new URL(req.url).protocol}//${
                   new URL(req.url).host
-                }/supa-oauth-redirect-return`,
+                }/`,
               },
             });
             if (error) throw error;

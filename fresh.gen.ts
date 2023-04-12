@@ -10,13 +10,11 @@ import * as $3 from "./routes/events/[id].tsx";
 import * as $4 from "./routes/index.tsx";
 import * as $5 from "./routes/signin.tsx";
 import * as $6 from "./routes/signup.tsx";
-import * as $7 from "./routes/supa-oauth-redirect-return.tsx";
-import * as $$0 from "./islands/AuthFragmentCatcher.tsx";
-import * as $$1 from "./islands/Counter.tsx";
-import * as $$2 from "./islands/EventForm.tsx";
-import * as $$3 from "./islands/LogForm.tsx";
-import * as $$4 from "./islands/SignOut.tsx";
-import * as $$5 from "./islands/SignUpOrIn.tsx";
+import * as $$0 from "./islands/Counter.tsx";
+import * as $$1 from "./islands/EventForm.tsx";
+import * as $$2 from "./islands/LogForm.tsx";
+import * as $$3 from "./islands/SignOut.tsx";
+import * as $$4 from "./islands/SignUpOrIn.tsx";
 
 const manifest = {
   routes: {
@@ -27,15 +25,13 @@ const manifest = {
     "./routes/index.tsx": $4,
     "./routes/signin.tsx": $5,
     "./routes/signup.tsx": $6,
-    "./routes/supa-oauth-redirect-return.tsx": $7,
   },
   islands: {
-    "./islands/AuthFragmentCatcher.tsx": $$0,
-    "./islands/Counter.tsx": $$1,
-    "./islands/EventForm.tsx": $$2,
-    "./islands/LogForm.tsx": $$3,
-    "./islands/SignOut.tsx": $$4,
-    "./islands/SignUpOrIn.tsx": $$5,
+    "./islands/Counter.tsx": $$0,
+    "./islands/EventForm.tsx": $$1,
+    "./islands/LogForm.tsx": $$2,
+    "./islands/SignOut.tsx": $$3,
+    "./islands/SignUpOrIn.tsx": $$4,
   },
   baseUrl: import.meta.url,
   config,

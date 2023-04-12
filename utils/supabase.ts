@@ -1,45 +1,92 @@
 import {
+  CookieAuthStorageAdapter,
   CookieOptions,
-  createServerSupabaseClient,
+  DEFAULT_COOKIE_OPTIONS,
+  SupabaseClientOptionsWithoutAuth,
 } from "@supabase/auth-helpers-shared";
-import { getCookies, setCookie } from "std/http/cookie.ts";
+import { createClient } from "@supabase/supabase-js";
+import { deleteCookie, getCookies, setCookie } from "std/http/cookie.ts";
 import { Database } from "../types/database.types.ts";
 
+class DenoFreshServerComponentAuthStorageAdapter
+  extends CookieAuthStorageAdapter {
+  constructor(
+    private readonly context: {
+      req: Request;
+      resHeaders?: Headers;
+    },
+    private readonly cookieOptions?: CookieOptions,
+  ) {
+    super();
+  }
+
+  protected getCookie(name: string): string | null | undefined {
+    const cookies = getCookies(this.context.req.headers);
+    const cookie = cookies[name] ?? "";
+    return decodeURIComponent(cookie);
+  }
+  protected setCookie(name: string, value: string): void {
+    if (!this.context.resHeaders) return;
+    setCookie(this.context.resHeaders, {
+      name,
+      value: encodeURIComponent(value),
+      ...this.cookieOptions,
+      sameSite: "Lax",
+      httpOnly: false,
+    });
+  }
+  protected deleteCookie(name: string): void {
+    if (!this.context.resHeaders) return;
+    deleteCookie(this.context.resHeaders, name);
+  }
+}
+
 export function createServerClient(
-  { req, resHeaders, cookieOptions }: {
+  context: {
     req: Request;
     resHeaders?: Headers;
-    cookieOptions?: CookieOptions;
   },
+  {
+    supabaseUrl = Deno.env.get("SUPABASE_URL"),
+    supabaseKey = Deno.env.get("SUPABASE_ANON_KEY"),
+    options,
+    cookieOptions,
+  }: {
+    supabaseUrl?: string;
+    supabaseKey?: string;
+    options?: SupabaseClientOptionsWithoutAuth<"public">;
+    cookieOptions?: CookieOptions;
+  } = {},
 ) {
-  return createServerSupabaseClient<Database>({
-    cookieOptions: {
-      ...cookieOptions,
-      name: `sb-${
-        new URL(Deno.env.get("SUPABASE_URL") ?? "http://localhost:54321")
-          .hostname.split(".")[0]
-      }-auth-token`,
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error(
+      "either SUPABASE_URL and SUPABASE_ANON_KEY env variables or supabaseUrl and supabaseKey are required!",
+    );
+  }
+
+  return createClient<Database>(supabaseUrl, supabaseKey, {
+    ...options,
+    global: {
+      ...options?.global,
+      headers: {
+        ...options?.global?.headers,
+        "X-Client-Info": `DENO_FRESH@0.0.1`,
+      },
     },
-    supabaseUrl: Deno.env.get("SUPABASE_URL") ?? "http://localhost:54321",
-    supabaseKey: Deno.env.get("SUPABASE_ANON_KEY") ??
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0",
-    getRequestHeader: (key) => {
-      return req.headers.get(key) ?? undefined;
-    },
-    getCookie: (name) => {
-      const cookies = getCookies(req.headers);
-      const cookie = cookies[name] ?? "";
-      return decodeURIComponent(cookie);
-    },
-    setCookie: (name, value, options) => {
-      if (!resHeaders) return;
-      setCookie(resHeaders, {
-        name,
-        value: encodeURIComponent(value),
-        ...options,
-        sameSite: "Lax",
-        httpOnly: false,
-      });
+    auth: {
+      flowType: "pkce",
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+      ...(cookieOptions?.name
+        ? {
+          storageKey: cookieOptions.name,
+        }
+        : {}),
+
+      storage: new DenoFreshServerComponentAuthStorageAdapter(context, {
+        ...DEFAULT_COOKIE_OPTIONS,
+        ...cookieOptions,
+      }),
     },
   });
 }
