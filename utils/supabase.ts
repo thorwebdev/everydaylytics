@@ -37,7 +37,7 @@ class DenoFreshServerComponentAuthStorageAdapter
   }
   protected deleteCookie(name: string): void {
     if (!this.context.resHeaders) return;
-    deleteCookie(this.context.resHeaders, name);
+    deleteCookie(this.context.resHeaders, name, { ...this.cookieOptions });
   }
 }
 
