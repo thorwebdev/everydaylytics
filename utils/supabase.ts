@@ -1,12 +1,14 @@
 import {
   CookieAuthStorageAdapter,
   CookieOptions,
+  CookieOptionsWithName,
+  createSupabaseClient,
   DEFAULT_COOKIE_OPTIONS,
   SupabaseClientOptionsWithoutAuth,
 } from "@supabase/auth-helpers-shared";
-import { createClient } from "@supabase/supabase-js";
 import { deleteCookie, getCookies, setCookie } from "std/http/cookie.ts";
 import { Database } from "../types/database.types.ts";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 class DenoFreshServerComponentAuthStorageAdapter
   extends CookieAuthStorageAdapter {
@@ -15,9 +17,9 @@ class DenoFreshServerComponentAuthStorageAdapter
       req: Request;
       resHeaders?: Headers;
     },
-    private readonly cookieOptions?: CookieOptions,
+    cookieOptions?: CookieOptions,
   ) {
-    super();
+    super(cookieOptions);
   }
 
   protected getCookie(name: string): string | null | undefined {
@@ -55,7 +57,7 @@ export function createServerClient(
     supabaseUrl?: string;
     supabaseKey?: string;
     options?: SupabaseClientOptionsWithoutAuth<"public">;
-    cookieOptions?: CookieOptions;
+    cookieOptions?: CookieOptionsWithName;
   } = {},
 ) {
   if (!supabaseUrl || !supabaseKey) {
@@ -64,7 +66,7 @@ export function createServerClient(
     );
   }
 
-  return createClient<Database>(supabaseUrl, supabaseKey, {
+  return createSupabaseClient<Database>(supabaseUrl, supabaseKey, {
     ...options,
     global: {
       ...options?.global,
@@ -74,15 +76,7 @@ export function createServerClient(
       },
     },
     auth: {
-      flowType: "pkce",
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-      ...(cookieOptions?.name
-        ? {
-          storageKey: cookieOptions.name,
-        }
-        : {}),
-
+      storageKey: cookieOptions?.name,
       storage: new DenoFreshServerComponentAuthStorageAdapter(context, {
         ...DEFAULT_COOKIE_OPTIONS,
         ...cookieOptions,
