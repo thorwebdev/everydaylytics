@@ -8,7 +8,6 @@ import {
 } from "@supabase/auth-helpers-shared";
 import { deleteCookie, getCookies, setCookie } from "std/http/cookie.ts";
 import { Database } from "../types/database.types.ts";
-import { SupabaseClient } from "@supabase/supabase-js";
 
 class DenoFreshServerComponentAuthStorageAdapter
   extends CookieAuthStorageAdapter {
